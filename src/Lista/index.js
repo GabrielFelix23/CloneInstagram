@@ -6,6 +6,36 @@ class Lista extends Component{
     feed: this.props.data
   }
 
+  mostraLikes = this.mostraLikes.bind(this)
+  like = this.like.bind(this)
+
+  like(){
+    let feed = this.state.feed
+
+    if(feed.likeada === true){
+      this.setState({
+        feed:{
+          likeada: false,
+          likers: feed.likers - 1
+        }
+      })
+    }
+  }
+
+  mostraLikes(likers){
+    let feed = this.state.feed
+
+    if(feed.likers <= 0){
+      return
+    }
+
+    return(
+      <Text style={styles.likes}>
+        {feed.likers} {feed.likers > 1 ? 'curtidas' : 'curtida'}
+      </Text>
+    )
+  }
+
   render(){
     return(
       <View style={styles.areaFeed}>
@@ -24,7 +54,7 @@ class Lista extends Component{
         />
 
         <View style={styles.areaBtn}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => this.like}>
             <Image
               source={require("../img/like.png")}
               style={styles.iconeLike}
@@ -38,6 +68,8 @@ class Lista extends Component{
             />
           </TouchableOpacity>
         </View>
+
+        {this.mostraLikes(this.state.feed.likers)}
 
         <View style={styles.viewRodape}>
           <Text style={styles.nomeRodape}>
@@ -103,6 +135,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#000",
     paddingLeft: 5
+  },
+  likes:{
+    fontWeight: 'bold',
+    marginLeft: 5
   }
 })
 
